@@ -1,1 +1,1 @@
-# spring_examples
+Repository containing various coding challenges
