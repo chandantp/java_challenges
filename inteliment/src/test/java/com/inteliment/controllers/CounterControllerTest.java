@@ -25,8 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.inteliment.Application;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@WebAppConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CounterControllerTest {
 
     private MockMvc mockMvc;
@@ -100,7 +99,7 @@ public class CounterControllerTest {
         mockMvc.perform(
                 post("/counter-api/search").contentType(MediaType.APPLICATION_JSON).content(input))
                 .andExpect(status().isOk()).andExpect(content().contentType(jsonContentType))
-                .andExpect(jsonPath("$.counts[0][\"Sed\"]", is(4)))
+                .andExpect(jsonPath("$.counts[0][\"Sed\"]", is(16)))
                 .andExpect(jsonPath("$.counts[1][\"Donec\"]", is(8)))
                 .andExpect(jsonPath("$.counts[2][\"Duis\"]", is(11)));
     }
