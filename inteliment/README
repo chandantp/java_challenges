@@ -31,13 +31,15 @@ RUN THE APP:
 
 APIs:
 
-1.Find number of occurrences for the given strings and provide output in JSON format
+1.Find number of occurrences for the given strings and provide output in JSON format.
+Note that the search performed is case-insensitive.
 
 curl http://localhost:8080/counter-api/search -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" -d '{"searchText":["Duis", "Sed", "Donec", "Augue", "Pellentesque", "123"]}' -H "Content-Type: application/json" –X POST
    or
 curl http://localhost:8080/counter-api/search -u user:password -d '{"searchText":["Duis", "Sed", "Donec", "Augue", "Pellentesque", "123"]}' -H "Content-Type: application/json" –X POST
 
 2.Find the top N occurring words and provide output in CSV format
+Note that the search performed is case-insensitive.
 
 curl http://localhost:8080/counter-api/top/20 -H "Authorization: Basic dXNlcjpwYXNzd29yZA==" -H "Accept: text/csv"
       (or)
