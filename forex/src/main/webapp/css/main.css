@@ -1,0 +1,66 @@
+@CHARSET "ISO-8859-1";
+
+#header {
+	background-color: grey;
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+
+#navigation {
+	line-height: 30px;
+	background-color: #eeeeee;
+	height: 100%;
+	width: 10%;
+	float: left;
+	padding: 5px;
+}
+
+#divxrates {
+	width: 40%;
+	float: left;
+	padding: 10px;
+	display: block;
+}
+
+#converter {
+	width: 40%;
+	float: left;
+	padding: 10px;
+	display: none;
+}
+
+#footer {
+	background-color: grey;
+	color: white;
+	clear: both;
+	text-align: center;
+	padding: 5px;
+}
+
+#targetAmount {
+	background-color: grey;
+	color: white;
+}
+
+.active { 
+    color: red;
+}
+
+#txrates {
+    border: 1px solid grey;
+}
+
+#txrates td {
+    border: 1px solid grey;
+}
+
+#txrates th {
+	border: 1px solid grey;
+    background-color: grey;
+    color: white;
+}
+
+.floats {
+	text-align: right;
+}
