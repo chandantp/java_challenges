@@ -1,10 +1,9 @@
 package com.inteliment.controllers;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,15 +13,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CounterController {
+public class CounterController implements ApplicationContextAware {
 
     private static final String EMPTY = "";
     private static final String WHITESPACE = "\\s+";
@@ -43,22 +46,24 @@ public class CounterController {
     private static final String SEARCH_TEXT_KEY = "searchText";
     private static final String TEXT_CSV_VALUE = "text/csv";
 
-    private static Map<String, Integer> word2count = null;
-    private static List<String> mostFrequentWords = null;
-
     private static final Logger logger = LoggerFactory.getLogger(CounterController.class);
 
-    static {
+    private Map<String, Integer> word2count = null;
+    private List<String> mostFrequentWords = null;
+
+    @Override
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
         try {
-            File file = ResourceUtils.getFile("classpath:sample.txt");
-            word2count = new HashMap<>();
-            String content = new String(Files.readAllBytes(Paths.get(file.getPath())));
+            Resource resource = context.getResource("classpath:sample.txt");
+            String content = new BufferedReader(new InputStreamReader(resource.getInputStream()))
+                    .lines().collect(Collectors.joining("\n"));
             logger.debug("File content = " + content.toString());
 
             // Remove all non-alphanumeric characters and whitespace(except space)
             String modifiedContent = content.toLowerCase().replaceAll(PUNCTUATION, EMPTY);
 
             // Build a map of word -> wordFrequency
+            word2count = new HashMap<>();
             String[] words = modifiedContent.split(WHITESPACE);
             logger.info("Words = " + words.length);
             for (String word : words) {
