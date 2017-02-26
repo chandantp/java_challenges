@@ -56,7 +56,7 @@ public class CounterController {
             logger.debug("File content = " + content.toString());
 
             // Remove all non-alphanumeric characters and whitespace(except space)
-            String modifiedContent = content.replaceAll(PUNCTUATION, EMPTY);
+            String modifiedContent = content.toLowerCase().replaceAll(PUNCTUATION, EMPTY);
 
             // Build a map of word -> wordFrequency
             String[] words = modifiedContent.split(WHITESPACE);
@@ -115,7 +115,8 @@ public class CounterController {
 
         Map<String, Integer> wordCounts = new HashMap<String, Integer>();
         for (String word : request.get(SEARCH_TEXT_KEY)) {
-            wordCounts.put(word, word2count.containsKey(word) ? word2count.get(word) : 0);
+            String word2 = word.toLowerCase();
+            wordCounts.put(word2, word2count.containsKey(word2) ? word2count.get(word2) : 0);
         }
 
         Map<String, Set<Entry<String, Integer>>> response = new HashMap<>();
