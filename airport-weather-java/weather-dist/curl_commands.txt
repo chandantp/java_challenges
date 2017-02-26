@@ -1,0 +1,17 @@
+curl -X GET http://localhost:9090/collect/ping
+
+curl -X GET http://localhost:9090/query/ping
+
+curl -X POST http://localhost:9090/collect/airport/BOS/44/44
+
+curl -X POST -H "Content-Type: application/json" -d {"mean":15.0,"first":10,"second":20,"third":30,"count":40} http://localhost:9090/collect/weather/BOS/wind
+
+curl -X GET http://localhost:9090/query/weather/BOS/100
+
+curl -X GET http://localhost:9090/collect/airports
+
+curl -X GET http://localhost:9090/collect/airport/BOS
+
+curl -X DELETE http://localhost:9090/collect/airport/BOS
+
+curl -X GET http://localhost:9090/collect/exit
