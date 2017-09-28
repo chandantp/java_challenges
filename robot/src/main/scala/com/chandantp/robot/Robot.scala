@@ -1,5 +1,7 @@
 package com.chandantp.robot
 
+import Robot._
+
 object Robot {
   val EmptyString = ""
 
@@ -22,21 +24,10 @@ object Robot {
 class Robot(position: Option[Position]) {
 
   def this() = this(None)
-  import Robot._
-
-  def execute(command: String): Robot = command.trim.toUpperCase match {
-    case cmd: String if cmd.trim.startsWith(Place) => place(cmd)
-    case Move => move
-    case Left => left
-    case Right => right
-    case Report => { report.foreach(println); this }
-    case _ => this
-  }
 
   def place(command: String): Robot = {
-    Robot(Position(command.replace(Robot.Place, Robot.EmptyString)))
+    Robot(Position(command.replace(Place, EmptyString)))
   }
-
 
   def move: Robot = position match {
     case Some(pos) => {
@@ -73,4 +64,15 @@ class Robot(position: Option[Position]) {
 
   def report: Option[String] = position.map(_.toString)
 
+  //
+  // Helper method for processing any commands
+  //
+  def execute(command: String): Robot = command.trim.toUpperCase match {
+    case cmd: String if cmd.trim.startsWith(Place) => place(cmd)
+    case Move => move
+    case Left => left
+    case Right => right
+    case Report => { report.foreach(x => println("Output: " + x)); this }
+    case _ => this // Unknown commands are ignored
+  }
 }
