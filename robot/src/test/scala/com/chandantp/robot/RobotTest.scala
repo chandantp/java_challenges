@@ -1,47 +1,45 @@
 package com.chandantp.robot
 
-import org.scalatest.FunSuite
-
-import Robot._
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
 class RobotTest extends FunSuite {
 
   val robot: Robot = new Robot
 
   test("parsing an invalid Position value \"ABC,HELLO,NORTH\" evaluates to None") {
-    assert(parse("ABC,HELLO,NORTH") === None)
+    assert(Position("ABC,HELLO,NORTH") === None)
   }
 
   test("parsing an invalid Position value \"1,1\" evaluates to None") {
-    assert(parse("1,1") === None)
+    assert(Position("1,1") === None)
   }
 
   test("parsing an invalid Position value \"1,1,ABC\" evaluates to None") {
-    assert(parse("1,1,ABC") === None)
+    assert(Position("1,1,ABC") === None)
   }
 
   test("parsing a valid Position value \"  1, 1, NORTH \" is successful") {
-    assert(parse("  1, 1, NORTH ") === Some(Position(1,1,"NORTH")))
+    assert(Position("  1, 1, NORTH ") === Position(1,1,"NORTH") && Position(1,1,"NORTH") != None)
   }
 
   test("parsing a valid Position value \" 1,1,north\" is successful") {
-    assert(parse("1,1,north") === Some(Position(1,1,"NORTH")))
+    assert(Position("1,1,north") === Position(1,1,"NORTH") && Position(1,1,"NORTH") != None)
   }
 
   test("parsing a valid Position value \"1,1,NORTH\" is successful") {
-    assert(parse("1,1,NORTH") === Some(Position(1,1,"NORTH")))
+    assert(Position("1,1,NORTH") === Position(1,1,"NORTH") && Position(1,1,"NORTH") != None)
   }
 
   test("parsing a valid Position value \"  1, 1, EAST\" is successful") {
-    assert(parse("  1, 1, EAST ") === Some(Position(1,1,"EAST")))
+    assert(Position("  1, 1, EAST ") === Position(1,1,"EAST") && Position(1,1,"EAST") != None)
   }
 
   test("parsing a valid Position value \"  1, 1, SOUTH\" is successful") {
-    assert(parse("  1, 1, SOUTH ") === Some(Position(1,1,"SOUTH")))
+    assert(Position("  1, 1, SOUTH ") === Position(1,1,"SOUTH") && Position(1,1,"SOUTH") != None)
   }
 
   test("parsing a valid Position value \"  1, 1, WEST\" is successful") {
-    assert(parse("  1, 1, WEST ") === Some(Position(1,1,"WEST")))
+    assert(Position("  1, 1, WEST ") === Position(1,1,"WEST") && Position(1,1,"WEST") != None)
   }
 
   test("\"PLACE 1,1,NORTH\" command is successful") {
@@ -77,7 +75,7 @@ class RobotTest extends FunSuite {
   }
 
   test("\"LEFT\" without prior successful PLACE command exec is ignored") {
-    assert(robot.place(Left).report === None)
+    assert(robot.left.report === None)
   }
 
   test("\"LEFT\" with prior successful PLACE command exec is successful") {
@@ -128,6 +126,26 @@ class RobotTest extends FunSuite {
     assert(robot.move.move.left.move.move.place("PLACE 10,-1,EAST").report === None)
     assert(robot.move.move.left.move.move.place("PLACE 10,-1,EAST").move.move.left.move.move.report === None)
     assert(robot.place("PLACE 0,0,NORTH").move.right.move.left.move.right.move.left.move.right.move.left.move.right.move.left.report === Some("4,4,NORTH"))
-    assert(robot.place("PLACE 0,0,NORTH").move.right.move.left.move.right.move.left.move.right.move.left.move.right.move.left.move.right.move.left.report === Some("4,4,NORTH"))
+  }
+
+  test("GAME play-3 successful with execute() helper method") {
+    assert(robot
+      .execute("PLACE 1,2,EAST").execute("MOVE").execute("MOVE").execute("blah")
+      .execute("LEFT").execute("MOVE").report === Some("3,3,NORTH"))
+  }
+
+  test("GAME play-4 successful with execute() helper method") {
+    assert(robot
+      .execute("move").execute("blah").execute("move").execute("left").execute("move")
+      .execute("move").execute("PLACE 10,-1,EAST").report === None)
+    assert(robot
+      .execute("move").execute("").execute("move").execute("left").execute("move")
+      .execute("move").execute("PLACE 10,-1,EAST").execute("move").execute("move")
+      .execute("left").execute("move").execute("move").report === None)
+    assert(robot
+      .execute("PLACE 0,0,NORTH").execute("move").execute("bla").execute("right").execute("move")
+      .execute("left").execute("move").execute("right").execute("move").execute("left")
+      .execute("move").execute("right").execute("move").execute("left").execute("move")
+      .execute("right").execute("move").execute("left").report === Some("4,4,NORTH"))
   }
 }
