@@ -1,1 +1,1 @@
-Repository containing various coding challenges
+This repo contains coding challenges solved using Java, Spring

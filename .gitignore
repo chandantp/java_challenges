@@ -1,0 +1,10 @@
+### Directories ###
+target/
+project/
+.project/
+.idea/
+.settings/
+
+### Files ###
+.classpath
+*.class
