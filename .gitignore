@@ -1,9 +1,11 @@
 ### Directories ###
+build/
 target/
 project/
 .project/
 .idea/
 .settings/
+.gradle/
 
 ### Files ###
 .classpath
