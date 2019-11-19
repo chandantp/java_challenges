@@ -10,11 +10,6 @@ public class MyList<T> {
             this.data = data;
             this.next = null;
         }
-
-        Node(T data, Node<T> next) {
-            this.data = data;
-            this.next = next;
-        }
     }
 
     Node<T> first = null;
@@ -36,7 +31,7 @@ public class MyList<T> {
     }
 
     void add(T data) {
-        Node e = new Node<T>(data);
+        Node<T> e = new Node<T>(data);
 
         if (isEmpty()) {
             first = e;
@@ -58,5 +53,31 @@ public class MyList<T> {
         count--;
 
         return e.data;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buf = new StringBuffer("(");
+        Node<T> curr = first;
+        while (curr != null) {
+            if (buf.length() != 1) buf.append(", ");
+            buf.append(curr.data);
+            curr = curr.next;
+        }
+        buf.append(")");
+        return buf.toString();
+    }
+
+    public void reverse() {
+        if (!isEmpty()) {
+            last = first;
+            first = reverseList(first, null);
+        }
+    }
+
+    private Node<T> reverseList(Node<T> curr, Node<T> prev) {
+        Node<T> next = curr.next;
+        curr.next = prev;
+        return next != null ? reverseList(next, curr) : curr;
     }
 }
