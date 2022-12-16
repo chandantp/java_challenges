@@ -10,7 +10,7 @@
     <properties>
     	<java.version>1.8</java.version>
         <jersey.version>2.22</jersey.version>
-        <spring.version>4.1.6.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
         <sqlite.version>3.8.11.1</sqlite.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
